@@ -1,45 +1,54 @@
 import React from 'react';
 import './App.css';
+import { connect } from 'react-redux';
+import { incrementButton, decrementButton, showNotification } from "./redux/actions"
+import Counter from './component/Counter';
 
 class App extends React.Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props)
-    this.state = {
-      counter: 0,
+  }
+  /*
+    decrement = props => {
+      this.setState({
+        counter: this.state.counter - 1
+      })
     }
-  }
-/*
-  decrement = props => {
-    this.setState({
-      counter: this.state.counter - 1
-    })
-  }
-  increment = props => {
-    this.setState({
-      counter: this.state.counter + 1
-    })
-  }
+    increment = props => {
+      this.setState({
+        counter: this.state.counter + 1
+      })
+    }
+  
+  */
 
-*/
-
-//Ternary 
-  change = (operation) => {
-    this.setState({
-      counter: operation === "decrement" ? this.state.counter - 1 : this.state.counter + 1
-    })
-  }
+  //Ternary 
+  // change = (operation) => {
+  //   this.setState({
+  //     counter: operation === "decrement" ? this.state.counter - 1 : this.state.counter + 1
+  //   })
+  // }
 
 
 
 
   render() {
-    const { counter } = this.state
     return <div>
-      <h1>{counter}</h1>
-      <button onClick={() => {this.change("decrement")}}>-</button>
-      <button onClick={()=>{this.change("increment")}}>+</button>
+      <Counter />
+      {
+        this.props.showNotification && <h3>{this.props.notificationText}</h3>
+      }
     </div>
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  const { showNotification, notificationText } = state.notificationsReducer
+  return {
+    showNotification,
+    notificationText
+  }
+}
+
+export default connect(mapStateToProps)(App);
